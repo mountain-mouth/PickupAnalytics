@@ -4,8 +4,8 @@ FROM golang:${GO_VERSION}-alpine AS builder
 
 RUN apk update && apk add alpine-sdk git && rm -rf /var/cache/apk/*
 
-RUN mkdir -p /api
-WORKDIR /api
+RUN mkdir -p /app
+WORKDIR /app
 
 COPY go.mod .
 COPY go.sum .
@@ -18,10 +18,10 @@ FROM alpine:latest
 
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 
-RUN mkdir -p /api
-WORKDIR /api
-COPY --from=builder /api/app .
-COPY --from=builder /api/test.db .
+RUN mkdir -p /app
+WORKDIR /app
+COPY --from=builder /app/app .
+COPY --from=builder /app/test.db .
 
 EXPOSE 8080
 
