@@ -2,7 +2,7 @@
 FROM node:20-alpine
 
 # コンテナ内での作業ディレクトリを指定します。
-WORKDIR /app
+WORKDIR /front
 
 # ホストの package.json と package-lock.json をコンテナの作業ディレクトリにコピーします。
 COPY package.json .
