@@ -1,0 +1,200 @@
+openapi: 3.0.0
+info:
+  title: PickUpAnalytics
+  description: UNI.
+  version: 1.0.0
+
+paths:
+  /users:
+    post:
+      summary: ユーザー登録
+      operationId: userCreate
+      responses:
+        "200":
+          description: 登録成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  mail:
+                    type: string
+                  pass:
+                    type: string
+                  age:
+                    type: number
+                  experience_years:
+                    type: number
+                  is_published:
+                    type: boolean
+        "400":
+          description: リクエストエラー
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 400
+                      details:
+                        type: object
+                        additionalProperties:
+                          type: string
+                        example:
+                          mail: ["メアド形式で入力してください"]
+                          age:
+                            [
+                              "数値型で入力してください",
+                              1~100の間を設定してください,
+                            ]
+                          pass:
+                            [
+                              "半角英数字記号を含めてください",
+                              "パスワードは8文字以上を設定してください",
+                            ]
+
+  /users/{userId}:
+    patch:
+      summary: ユーザー更新
+      operationId: userUpdate
+      responses:
+        "200":
+          description: ユーザー更新
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  mail:
+                    type: string
+                  pass:
+                    type: string
+                  age:
+                    type: number
+                  experience_years:
+                    type: number
+                  is_published:
+                    type: boolean
+        "400":
+          description: リクエストエラー
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 400
+                      details:
+                        type: object
+                        additionalProperties:
+                          type: string
+                        example:
+                          mail: ["メアド形式で入力してください"]
+                          age:
+                            [
+                              "数値型で入力してください",
+                              1~100の間を設定してください,
+                            ]
+                          pass:
+                            [
+                              "半角英数字記号を含めてください",
+                              "パスワードは8文字以上を設定してください",
+                            ]
+        "404":
+          description: ユーザーが存在しない
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 404
+                      message:
+                        type: string
+                        example: "指定のユーザーは存在しません。"
+  /login:
+    post:
+      summary: ログイン
+      operationId: userLogin
+      requestBody:
+        description: ユーザーログイン情報
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "user1"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        "200":
+          description: ログイン成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        "401":
+          description: 認証失敗
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 401
+                      message:
+                        type: string
+                        example: "idまたは、パスワードが間違っています"
+  /logout:
+    post:
+      summary: ログアウト
+      operationId: userLogout
+      responses:
+        "200":
+          description: ログアウト成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Logged out successfully"
+        "400":
+          description: リクエストエラー
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Bad request"

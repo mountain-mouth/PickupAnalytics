@@ -3,6 +3,8 @@ erDiagram
     users {
         int id PK
         text name
+        text mail
+        text pass
         int age
         int experience_years
         bool is_published
