@@ -13,7 +13,7 @@ services:
     volumes:
       - .:/api
     environment:
-      - GO_VERSION=1.11
+      - GO_VERSION=1.13
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_USER=postgres
