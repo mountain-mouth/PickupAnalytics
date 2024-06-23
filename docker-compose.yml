@@ -46,7 +46,6 @@ services:
     ]
     volumes:
       - ./api/migrations:/api/migrations
-
   nginx:
     image: nginx:1.19
     networks:

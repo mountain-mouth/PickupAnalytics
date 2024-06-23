@@ -4,7 +4,7 @@
 
 dockerの環境立ち上げ
 ```
-make docker start
+make project start
 ```
 
 migrationの実行
