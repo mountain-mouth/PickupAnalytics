@@ -34,6 +34,22 @@ services:
       POSTGRES_DB: pickup_analytics
     volumes:
       - db_data:/var/lib/postgresql/data
+  migrate_app:
+    image: migrate/migrate
+    networks:
+      local_network:
+        ipv4_address: 172.28.1.6
+    command: [
+      "-path=/api/migrations/",
+      "-database", "postgres://postgres:postgres@db:5432/pickup_analytics?sslmode=disable",
+      "up"
+    ]
+    volumes:
+      - ./api/migrations:/api/migrations
+    # depends_on:
+    #   - db
+    #   - app
+
   nginx:
     image: nginx:1.19
     networks:

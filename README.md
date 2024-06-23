@@ -1,6 +1,14 @@
 # PickupAnalytics
 
-### next の起動
+### プロジェクト起動
 
-- front に移動
-- npm run dev を実行
+dockerの環境立ち上げ
+```
+make docker start
+```
+
+migrationの実行
+```
+migration start
+```
+
