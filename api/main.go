@@ -1,28 +1,27 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"gorm.io/driver/postgres"
 	"time"
-	"github.com/mountain-mouth/gin"
+	"api/src/controller"
 )
 
-type Creature struct {
-	ID    uint   `json:”id”`
-	Code  string `json:”code”`
-	Name string   `json:”name”`
+type HandlerWithDB struct {
+    DB *gorm.DB
+}
+
+func (h *HandlerWithDB) GetAreaWrapper(c *gin.Context) {
+    // ここでGetArea関数を呼び出し、必要に応じてDBインスタンスを渡す
+    controller.GetArea(c, h.DB)
 }
 
 func main() {
 
 	r := gin.Default()
-
-	// テストデータ作成
-	InsertTestData()
 
 	r.GET("/hello", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -52,7 +51,10 @@ func main() {
 		})
 	})
 
-	r.GET("/areas", controller.GetArea)
+	r.GET("/areas", func(c *gin.Context) {
+        handler := &HandlerWithDB{DB: InitDB()}
+        handler.GetAreaWrapper(c)
+    })
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
@@ -82,40 +84,4 @@ func InitDB() *gorm.DB {
 	}
 
 	return db
-}
-
-func InsertTestData() {
-	db := InitDB()
-	db.AutoMigrate(&Creature{})
-
-	testCreaturetData := []Creature{
-		{Code: "L1212", Name: "うみねこ"},
-		{Code: "L1213", Name: "うり"},
-		{Code: "L1214", Name: "ねこ"},
-	}
-
-	for _, creature := range testCreaturetData {
-		result := db.Create(&creature)
-
-		if result.Error != nil {
-			fmt.Println("エラー:", result.Error)
-		} else {
-			fmt.Println("新しい商品のID:", creature.Name)
-		}
-	} 
-}
-
-func GetCreature(c *gin.Context) {
-	db := InitDB()
-
-	var creature []Creature
-
-	if err := db.Find(&creature).Error; err != nil {
-		c.AbortWithStatus(http.StatusInternalServerError)
-		log.Println(err)
-	} else {
-		c.JSON(http.StatusOK, creature)
-		log.Println(creature)
-	}
-
 }
