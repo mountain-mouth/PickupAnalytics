@@ -46,9 +46,6 @@ services:
     ]
     volumes:
       - ./api/migrations:/api/migrations
-    # depends_on:
-    #   - db
-    #   - app
 
   nginx:
     image: nginx:1.19
