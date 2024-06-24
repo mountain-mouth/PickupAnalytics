@@ -12,6 +12,12 @@ while [ ${CURRENT_RETRIES} -lt ${MAX_RETRIES} ]; do
     # 結果を表示
     if echo "${TABLE_EXISTS}" | grep -q "t"; then
         echo "テーブルが存在します。"
+        CONTAINER_ID=$(docker ps -a -q --filter "name=migrate_app")
+        if [ -n "$CONTAINER_ID" ]; then
+            echo "マイグレーションのコンテナを修了させました"
+            docker stop ${CONTAINER_ID}
+            docker rm ${CONTAINER_ID}
+        fi
         break
     else
         echo "テーブルが存在しません。"

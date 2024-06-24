@@ -5,15 +5,16 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
+    tty: true
     networks:
       local_network:
         ipv4_address: 172.28.1.2
     ports:
       - "8080:8080"
     volumes:
-      - .:/api
+      - ./api:/app
     environment:
-      - GO_VERSION=1.13
+      - GO_VERSION=1.18
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_USER=postgres
@@ -21,6 +22,7 @@ services:
       - DB_NAME=pickup_analytics
     depends_on:
       - db
+    command: sh -c 'go mod tidy && air'
   db:
     image: postgres:13
     networks:
