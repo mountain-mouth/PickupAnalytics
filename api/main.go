@@ -14,13 +14,19 @@ type HandlerWithDB struct {
     DB *gorm.DB
 }
 
+func (h *HandlerWithDB) GetUserWrapper(c *gin.Context) {
+    controller.GetUser(c, h.DB)
+}
+
 func (h *HandlerWithDB) GetAreaWrapper(c *gin.Context) {
-    // ここでGetArea関数を呼び出し、必要に応じてDBインスタンスを渡す
     controller.GetArea(c, h.DB)
 }
 
-func main() {
+func (h *HandlerWithDB) GetOccupationWrapper(c *gin.Context) {
+    controller.GetOccupation(c, h.DB)
+}
 
+func main() {
 	r := gin.Default()
 
 	r.GET("/hello", func(c *gin.Context) {
@@ -29,10 +35,20 @@ func main() {
 		})
 	})
 
+	r.GET("/users", func(c *gin.Context) {
+        handler := &HandlerWithDB{DB: InitDB()}
+        handler.GetUserWrapper(c)
+    })
+
 	r.GET("/areas", func(c *gin.Context) {
         handler := &HandlerWithDB{DB: InitDB()}
         handler.GetAreaWrapper(c)
     })
+
+	r.GET("/occupations", func(c *gin.Context) {
+		handler := &HandlerWithDB{DB: InitDB()}
+		handler.GetOccupationWrapper(c)
+	})
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
