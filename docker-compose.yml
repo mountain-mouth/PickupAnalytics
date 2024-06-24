@@ -73,7 +73,6 @@ services:
       - ./front:/front
 volumes:
   db_data:
-
 networks:
   local_network:
     driver: bridge
