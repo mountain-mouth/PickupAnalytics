@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS sub_areas;
+
 CREATE TABLE sub_areas (
     id SERIAL PRIMARY KEY,
     area_id INT,

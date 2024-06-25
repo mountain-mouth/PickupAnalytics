@@ -12,7 +12,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./api:/app
+      - ./api:/api
     environment:
       - GO_VERSION=1.18
       - DB_HOST=postgres

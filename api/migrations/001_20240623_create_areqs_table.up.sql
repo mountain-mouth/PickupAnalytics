@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS areas;
+
 CREATE TABLE areas (
     id SERIAL PRIMARY KEY,
     name TEXT,

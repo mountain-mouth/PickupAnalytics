@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS targets;
+
 CREATE TABLE targets (
     id BIGSERIAL PRIMARY KEY,
     age INT,
